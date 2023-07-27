@@ -70,7 +70,7 @@ class UserData extends Command
         if ($result === false) {
             $this->error('Error writing data to file');
         } else {
-            $this->info('Data recording is successful');
+            $this->info('Data recording is successful!');
         }
     }
 }
