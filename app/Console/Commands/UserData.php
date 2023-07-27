@@ -68,7 +68,7 @@ class UserData extends Command
         $result = file_put_contents($file, json_encode($data));
 
         if ($result === false) {
-            $this->error('Error writing data to file');
+            $this->error('Error writing data to file!');
         } else {
             $this->info('Data recording is successful!');
         }
