@@ -24,33 +24,49 @@ class UserData extends Command
      * Execute the console command.
      */
     public function handle()
+
+
     {
         $name = $this->argument('name');
         $this->info($name);
         $age = $this->ask('How old are you?');
 
         if ($age < 18) {
-            if ($this->confirm('Do you want to continue?') === false) {
-                $this->error('The command is complete.');
-            }
+            $this->ifConfirm();
         }
         $option = $this->choice('make a choice:', ['read', 'write']);
-        if ($option === 'read') {
+        if ($this->ifRead($option)) {
             $this->readFile();
-        } elseif ($option === 'write') {
-            $this->writeFile();
+            return;
+        }
+        $this->writeFile();
+    }
+
+    private function ifConfirm(): void
+    {
+        if ($this->confirm('Do you want to continue?') === false) {
+            $this->error('The command is complete.');
         }
     }
+
+    private function ifRead($option): bool
+    {
+        if ($option === 'read') {
+            return true;
+        }
+        return false;
+    }
+
 
     private function readFile(): void
     {
         $file = 'example.txt';
-        if (file_exists($file)) {
-            $content = file_get_contents($file);
-            $this->info("The contents of the file: \n {$content}");
-        } else {
+        if (file_exists($file) === false) {
             $this->error('Content does not exist.');
+            return;
         }
+        $content = file_get_contents($file);
+        $this->info("The contents of the file: \n {$content}");
     }
 
     private function writeFile(): void
@@ -69,8 +85,8 @@ class UserData extends Command
 
         if ($result === false) {
             $this->error('Error writing data to file!');
-        } else {
-            $this->info('Data recording is successful!');
+            return;
         }
+        $this->info('Data recording is successful!');
     }
 }
