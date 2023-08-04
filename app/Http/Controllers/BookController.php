@@ -39,13 +39,11 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(BookShowRequest $bookShowRequest)
+    public function show(BookShowRequest $bookShowRequest, $id)
     {
-        $bookShowRequest->input('id');
-        $bookShowRequest->validated();
+        $bookShowRequest->merge(['id' => $id])->validated();
         return new BookResource(
             (object)[
-                'id' => '1',
                 'name' => 'MyFirstBook',
                 'author' => 'Oleksiy',
                 'year' => '2023',
@@ -57,13 +55,11 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BookUpdateRequest $bookUpdateRequest,)
+    public function update(BookUpdateRequest $bookUpdateRequest, $id)
     {
-        $bookUpdateRequest->input('id');
-        $bookUpdateRequest->validated();
+        $bookUpdateRequest->merge(['id' => $id])->validated();
         return new BookResource(
             (object)[
-                'id' => '1',
                 'name' => 'MyFirstBook',
                 'author' => 'Oleksiy',
                 'year' => '2023',

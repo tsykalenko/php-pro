@@ -12,8 +12,8 @@ class BookStoreRequest extends FormRequest
             'id' => 'exists:books,id',
             'name' => 'required' | 'string',
             'author' => 'require' | 'string',
-            'year' => 'require' | 'integer',
-            'countPages' => 'require' | 'integer',
+            'year' => 'require' | 'integer' | 'min:6' | 'max:99',
+            'countPages' => 'require' | 'integer' | 'min:1',
         ];
     }
 }
