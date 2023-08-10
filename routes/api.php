@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\BooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/api/book.store', [BookController::class, 'store']);
-Route::get('/api/book.show/{id}', [BookController::class, 'show']);
-Route::put('/api/book.put/{id}', [BookController::class, 'update']);
-Route::delete('/api/book.delete/{id}', [BookController::class, 'destroy']);
+Route::apiResource('books', BooksController::class);
