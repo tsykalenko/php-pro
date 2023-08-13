@@ -13,10 +13,8 @@ class BooksResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public static function collection($resource): array
     {
-        /** @var BooksIterator $resource */
-        $resource = $this->resource;
         return [
             'id' => $resource->getId(),
             'name' => $resource->getName(),

@@ -14,7 +14,7 @@ use App\Repositories\Books\DTOs\BooksShowDTO;
 use App\Repositories\Books\DTOs\BooksStoreDTO;
 use App\Repositories\Books\DTOs\BooksUpdateDTO;
 use App\Services\Books\BooksService;
-use Ramsey\Collection\Collection;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class BooksController extends Controller
 {
@@ -37,7 +37,7 @@ class BooksController extends Controller
             $validatedData['lang'],
         );
         $bookIterator = $this->booksService->index($dto);
-        return new Collection($bookIterator);
+        return response()->json(new BooksResource(collect()->$bookIterator), ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -54,7 +54,7 @@ class BooksController extends Controller
             $validatedData['pages'],
         );
         $bookIterator = $this->booksService->store($dto);
-        return new BooksResource($bookIterator);
+        return response()->json(new BooksResource($bookIterator), ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -68,7 +68,7 @@ class BooksController extends Controller
             $validatedData['id']
         );
         $bookIterator = $this->booksService->show($dto);
-        return new BooksResource($bookIterator);
+        return response()->json(new BooksResource($bookIterator), ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -86,7 +86,7 @@ class BooksController extends Controller
             $validatedData['pages'],
         );
         $bookIterator = $this->booksService->update($dto);
-        return new BooksResource($bookIterator);
+        return response()->json(new BooksResource($bookIterator), ResponseAlias::HTTP_OK);
     }
 
     /**
@@ -100,6 +100,6 @@ class BooksController extends Controller
             $validatedData['id']
         );
         $bookIterator = $this->booksService->destroy($dto);
-        return new BooksResource($bookIterator);
+        return response()->json(new BooksResource($bookIterator), ResponseAlias::HTTP_NO_CONTENT);
     }
 }
