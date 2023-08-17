@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('books', BooksController::class);
+Route::get('books', [BooksController::class, 'index']);

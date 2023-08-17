@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Book;
+namespace App\Http\Requests\Categories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BooksShowRequest extends FormRequest
+class CategoriesUpdateRequest extends FormRequest
 {
     protected function prepareForValidation(): void
     {
@@ -16,7 +16,8 @@ class BooksShowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'exists:books,id',
+            'id' => 'exists:categories,id',
+            'name' => 'required' | 'string',
         ];
     }
 }

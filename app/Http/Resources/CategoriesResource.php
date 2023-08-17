@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Repositories\Books\Iterators\BooksIterator;
+use App\Repositories\Categories\Iterators\CategoriesIterator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BooksResource extends JsonResource
+class CategoriesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,17 +15,12 @@ class BooksResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var BooksIterator $resource */
+        /** @var CategoriesIterator $resource */
         $resource = $this->resource;
+
         return [
             'id' => $resource->getId(),
             'name' => $resource->getName(),
-            'year' => $resource->getYear(),
-            'createdAt' => $resource->getCreatedAt(),
-            'category' => new CategoriesResource(
-                $resource->getCategory()
-
-            ),
         ];
     }
 }

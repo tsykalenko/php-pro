@@ -35,12 +35,18 @@ class BooksService
 
     public function update(BooksUpdateDTO $booksUpdateDTO): mixed
     {
-        return $this->bookRepository->update($booksUpdateDTO);
+        $this->bookRepository->update($booksUpdateDTO);
+        return $this->bookRepository->getById($booksUpdateDTO->getId());
     }
 
     public function destroy(BooksDestroyDTO $booksDestroyDTO): mixed
     {
         return $this->bookRepository->destroy($booksDestroyDTO);
+    }
+
+    public function getAllData()
+    {
+        return $this->bookRepository->getAllData();
     }
 
 }

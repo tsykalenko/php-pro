@@ -7,11 +7,32 @@ use App\Repositories\Books\DTOs\BooksIndexDTO;
 use App\Repositories\Books\DTOs\BooksShowDTO;
 use App\Repositories\Books\DTOs\BooksStoreDTO;
 use App\Repositories\Books\DTOs\BooksUpdateDTO;
+use App\Repositories\Books\Iterators\BooksIterator;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Collection;
 
 class BooksRepository
 {
+    public function getAllData()
+    {
+        $result = DB::table('books')
+            ->select([
+                'books.id',
+                'books.name',
+                'year',
+                'created_at',
+                'category_id',
+                'categories.name as category_name',
+            ])
+            ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->get();
+
+
+        return $result->map(function ($item) {
+            return new BooksIterator($item);
+        });
+    }
+
     public function index(BooksIndexDTO $bookIndexDTO): Collection
     {
         $query = DB::table('books')
@@ -50,8 +71,8 @@ class BooksRepository
 
     public function update(BooksUpdateDTO $booksUpdateDTO)
     {
-        return DB::table('books')
-            ->insertGetId([
+        DB::table('books')
+            ->update([
                 'name' => $booksUpdateDTO->getName(),
                 'year' => $booksUpdateDTO->getYear(),
                 'lang' => $booksUpdateDTO->getLang(),
@@ -59,13 +80,26 @@ class BooksRepository
             ]);
     }
 
-    public function destroy(BooksDestroyDTO $booksDestroyDTO)
+    public function destroy(BooksDestroyDTO $booksDestroyDTO): bool
     {
         return DB::table('books')
-            ->delete([
-                'id' => $booksDestroyDTO->getId(),
-            ]);
+            ->where('id', '=', $booksDestroyDTO->getId())
+            ->delete();
     }
 
+    public function getById(int $id): BooksIterator
+    {
+        return new BooksIterator(
+            DB::table('books')
+                ->select([
+                    'id',
+                    'name',
+                    'year',
+                    'created_at',
+                ])
+                ->where('id', '=', $id)
+                ->first()
+        );
+    }
 
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Book;
+namespace App\Http\Requests\Books;
 
+use App\Enum\LangEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class BooksStoreRequest extends FormRequest
+class BooksIndexRequest extends FormRequest
 {
     protected function prepareForValidation(): void
     {
@@ -17,10 +18,11 @@ class BooksStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'id' => ['required', 'integer'],
+            'created_at' => ['required', 'integer'],
+            'updated_at' => ['required', 'integer'],
             'year' => 'sometimes | integer | min:1970 | max:' . date('Y'),
-            'lang' => ['sometimes', Rule::in(['en', 'ua', 'pl', 'de'])],
-            'pages' => ['required', 'integer', 'min:10', 'max:55000'],
+            'lang' => ['sometimes', Rule::enum(LangEnum::class)],
         ];
     }
 }

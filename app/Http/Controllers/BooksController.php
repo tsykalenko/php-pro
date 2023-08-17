@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Book\BooksDestroyRequest;
-use App\Http\Requests\Book\BooksIndexRequest;
-use App\Http\Requests\Book\BooksShowRequest;
-use App\Http\Requests\Book\BooksStoreRequest;
-use App\Http\Requests\Book\BooksUpdateRequest;
+use App\Http\Requests\Books\BooksDestroyRequest;
+use App\Http\Requests\Books\BooksIndexRequest;
+use App\Http\Requests\Books\BooksShowRequest;
+use App\Http\Requests\Books\BooksStoreRequest;
+use App\Http\Requests\Books\BooksUpdateRequest;
 use App\Http\Resources\BooksResource;
 use App\Repositories\Books\DTOs\BooksDestroyDTO;
 use App\Repositories\Books\DTOs\BooksIndexDTO;
@@ -26,18 +26,9 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(
-        BooksIndexRequest $bookIndexRequest,
-    ) {
-        $validatedData = $bookIndexRequest->validated();
-        $dto = new BooksIndexDTO(
-            $validatedData['created_at'],
-            $validatedData['updated_at'],
-            $validatedData['year'],
-            $validatedData['lang'],
-        );
-        $bookIterator = $this->booksService->index($dto);
-        return response()->json(new BooksResource(collect()->$bookIterator), ResponseAlias::HTTP_OK);
+    public function index()
+    {
+        return BooksResource::collection($this->booksService->getAllData());
     }
 
     /**

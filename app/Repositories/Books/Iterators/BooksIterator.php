@@ -2,6 +2,10 @@
 
 namespace App\Repositories\Books\Iterators;
 
+use App\Enum\LangEnum;
+use App\Repositories\Categories\Iterators\CategoriesIterator;
+use Carbon\Carbon;
+
 class BooksIterator
 {
     protected int $id;
@@ -9,53 +13,56 @@ class BooksIterator
     protected int $year;
     protected string $lang;
     protected int $pages;
+    protected CategoriesIterator $category;
+    protected Carbon $createdAt;
+
+    /**
+     * @return int
+     */
+    public function getCategory(): CategoriesIterator
+    {
+        return $this->category;
+    }
 
     public function __construct(object $data)
     {
         $this->id = $data->id;
         $this->name = $data->name;
         $this->year = $data->year;
-        $this->lang = $data->lang;
-        $this->pages = $data->pages;
+        $this->createdAt = new Carbon($data->created_at);
+        $this->category = new CategoriesIterator(
+            $data->category_id,
+            $data->category_name,
+        );
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
     public function getYear(): int
     {
         return $this->year;
     }
 
-    /**
-     * @return string
-     */
     public function getLang(): string
     {
         return $this->lang;
     }
 
-    /**
-     * @return int
-     */
     public function getPages(): int
     {
         return $this->pages;
+    }
+
+    public function getCreatedAt(): Carbon
+    {
+        return $this->createdAt;
     }
 }

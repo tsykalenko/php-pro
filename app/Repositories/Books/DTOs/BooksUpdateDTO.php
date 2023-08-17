@@ -2,13 +2,15 @@
 
 namespace App\Repositories\Books\DTOs;
 
+use App\Enum\LangEnum;
+
 class BooksUpdateDTO
 {
     public function __construct(
         protected int $id,
         protected string $name,
         protected int $year,
-        protected string $lang,
+        protected LangEnum $lang,
         protected int $pages,
     ) {
     }
@@ -32,7 +34,7 @@ class BooksUpdateDTO
     }
 
 
-    public function getLang(): string
+    public function getLang(): LangEnum
     {
         return $this->lang;
     }
