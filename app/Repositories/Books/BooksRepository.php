@@ -15,6 +15,7 @@ class BooksRepository
 {
     public function getAllData()
     {
+        $lastId = 2;
         $result = DB::table('books')
             ->select([
                 'books.id',
@@ -25,6 +26,9 @@ class BooksRepository
                 'categories.name as category_name',
             ])
             ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->orderBy('books.id')
+            ->limit(2)
+            ->where('books.id', '>', $lastId)
             ->get();
 
 
