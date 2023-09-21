@@ -13,10 +13,10 @@ use \Illuminate\Support\Collection;
 
 class BooksRepository
 {
-    public function getAllData()
+    public function getAllData(): Collection
     {
-        $lastId = 2;
-        $result = DB::table('books')
+        $allData = collect();
+        $query = DB::table('books')
             ->select([
                 'books.id',
                 'books.name',
@@ -25,16 +25,13 @@ class BooksRepository
                 'category_id',
                 'categories.name as category_name',
             ])
-            ->join('categories', 'categories.id', '=', 'books.category_id')
-            ->orderBy('books.id')
-            ->limit(2)
-            ->where('books.id', '>', $lastId)
-            ->get();
-
-
-        return $result->map(function ($item) {
-            return new BooksIterator($item);
-        });
+            ->join('categories', 'categories.id', '=', 'books.category_id');
+        $query->chunkById(5, function (Collection $books) use ($allData) {
+            $books->map(function ($item) use ($allData) {
+                $allData->add(new BooksIterator($item));
+            });
+        }, 'books.id', 'id');
+        return $allData;
     }
 
     public function index(BooksIndexDTO $bookIndexDTO): Collection
