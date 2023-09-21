@@ -34,6 +34,7 @@ class BooksRepository
         return $allData;
     }
 
+
     public function index(BooksIndexDTO $bookIndexDTO): Collection
     {
         $query = DB::table('books')

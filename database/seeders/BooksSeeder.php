@@ -31,3 +31,4 @@ class BooksSeeder extends Seeder
         }
     }
 }
+
